@@ -1,0 +1,59 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>SMS Server Tools 3</title>
+        <meta name="description" content="">
+
+        <style>
+
+        </style>
+        <script>
+            function init() {
+                var form = document.getElementById('form'),
+                    number = document.getElementById('number'),
+                    send = document.getElementById('send'),
+                    message = document.getElementById('message'),
+                    flash = document.getElementById('flash');
+                    
+                
+                send.addEventListener('click', function(e) { 
+                    var data, xhr = new XMLHttpRequest();
+
+                    e.preventDefault();
+                    
+                    data = {
+                        to: number.value,
+                        message: message.value,
+                        flash: flash.checked
+                    }
+
+                    xhr.open(form.method,form.action,true);
+                    xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+                    xhr.onreadystatechange=function() {
+                        if (xhr.readyState==4)
+                        {
+                            if(xhr.status==200)
+                                alert("Sent!");
+                            else
+                                alert("Problems");
+                        }
+                    }
+                    xhr.send(JSON.stringify(data));
+
+                }, 
+                false);
+
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <form action="/sms" method="POST" id="form"> 
+            To: <input type="tel" id="number" placeholder="46701234567" /><br />
+            Flash: <input type="checkbox" id="flash" /><br />
+            Message: <textarea id="message"></textarea><br />
+            <button id="send" >Send</button>
+        </form>
+    </body>
+</html>
